@@ -10,6 +10,7 @@ import java.util.Scanner;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+import im.jahnke.bordcomputer.gui.Window;
 
 public class Main {
 
@@ -50,11 +51,14 @@ public class Main {
 			byte[] buffer = new byte[1024];
 			int len = -1;
 			try {
-				String sb = new String();
-				while ((len = this.in.read(buffer)) > -1) {
-					String s = new String(buffer, 0, len);
-					sb += s;
-					System.out.print(s);
+				
+				while (true) {
+					String sb = new String();
+					while ((len = this.in.read(buffer)) > 0) {
+						String s = new String(buffer, 0, len);
+						sb += s;
+						System.out.print(s);
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -97,14 +101,15 @@ public class Main {
 	    return portArray;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
+		new Window();
 		System.out.println("Verfügbare Ports:");
 		for (String string : listSerialPorts()) {
 			System.out.println(string);
 		}
 		
 		try {
-			(new Main()).connect("COM5");
+			(new Main()).connect("COM6");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
