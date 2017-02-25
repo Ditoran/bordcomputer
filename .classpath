@@ -9,5 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jxmapviewer.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.16.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
