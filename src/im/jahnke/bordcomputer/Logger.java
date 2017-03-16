@@ -1,19 +1,29 @@
 package im.jahnke.bordcomputer;
 
-import javax.swing.JEditorPane;
+import java.util.Observable;
 
-public class Logger<T> {
+public class Logger extends Observable {
 	
-	private static JEditorPane object;
+	private static String text = "";
 	
-	public static void add(JEditorPane pane){
-		object = pane;
+	private static Logger instance = null;
+	
+	private Logger(){
+		
 	}
 	
 	public static void log(String log){
-		object.setText(object.getText()+ log + "\n");
-		object.setCaretPosition(object.getText().length());
-		object.repaint();
+		if(instance == null){
+			instance = new Logger();
+		}		
+		
+		text += log + "\n";
+		instance.setChanged();
+		instance.notifyObservers(text);
+	}
+	
+	public static Logger getInstance(){
+		return instance;
 	}
 	
 }

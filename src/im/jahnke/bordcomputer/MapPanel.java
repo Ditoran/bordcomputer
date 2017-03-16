@@ -55,9 +55,16 @@ public class MapPanel {
 		mapViewer.setTileFactory(tileFactory);	
 
 		RoutePainter routePainter = new RoutePainter(track);
+		mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+		
+		if(track.size()==0){
+			GeoPosition gp = new GeoPosition(52.517580, 13.405520);
+			track.add(gp);
+			mapViewer.setZoom(17);
+		}
 
 		// Set the focus
-		mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+		
 		
 		mapViewer.addComponentListener(new ComponentAdapter() {			
 			@Override
