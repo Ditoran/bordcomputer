@@ -19,11 +19,15 @@ public class Logger extends Observable {
 		
 		text += log + "\n";
 		instance.setChanged();
-		instance.notifyObservers(text);
+		instance.notifyObservers(instance);
 	}
 	
 	public static Logger getInstance(){
 		return instance;
+	}
+	
+	public String getText(){
+		return text;
 	}
 	
 }
