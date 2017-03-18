@@ -2,10 +2,12 @@ package im.jahnke.bordcomputer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -17,27 +19,34 @@ import java.util.Observer;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
+import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.Controller;
 
 public class Window implements Observer {
@@ -49,6 +58,7 @@ public class Window implements Observer {
 	JMenuBar menuBar;
 	JMenu menu;
 	JMenuItem item;
+	JPanel menuPanel;
 	JPanel leftPanel;
 	JPanel rightPanel;
 	DefaultTableModel tableModel;
@@ -70,14 +80,18 @@ public class Window implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         
-        toolBar = new JToolBar("Still draggable");
+        menuPanel = new JPanel();
+        menuPanel.setLayout(new GridLayout(2, 1));
         
-        toolBar.setPreferredSize(new Dimension(toolBar.getSize().width, 32));
-        frame.add(toolBar, BorderLayout.PAGE_START);
+        toolBar = new JToolBar();
+        toolBar.setFloatable(false);      
         
         button = new JButton();
         button.setIcon(new ImageIcon("icons/usb.png"));
-        button.setActionCommand("usb");
+        button.setMargin(new Insets(0,0,0,0));
+        button.setPreferredSize(new Dimension(16, 16));
+        
+        button.setActionCommand(ActionCommands.TOOLBAR_USB);
         button.addActionListener(controller);
         
         toolBar.add(button);
@@ -91,15 +105,21 @@ public class Window implements Observer {
         menu.add(item);
         
         menuBar.add(menu);
+                
+        menuPanel.add(menuBar);
+        menuPanel.add(toolBar);
         
-        //test.add(menuBar, BorderLayout.BEFORE_FIRST_LINE);
+        
+        frame.add(menuPanel, BorderLayout.BEFORE_FIRST_LINE);
         
         
         leftPanel = new JPanel();
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         frame.add(leftPanel, BorderLayout.EAST);
         leftPanel.setLayout(new BorderLayout());
         
         rightPanel = new JPanel();
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         frame.add(rightPanel, BorderLayout.EAST);
         rightPanel.setLayout(new GridLayout(3, 1));
 
@@ -125,28 +145,7 @@ public class Window implements Observer {
 		Arrays.sort(logs);
 		System.out.println(Arrays.toString(logs));*/
         
-        /*JComboBox<String> externalDrives = new JComboBox<String>();
         
-        JPanel panel = new JPanel();
-        panel.add(externalDrives);
-        
-        JOptionPane.showMessageDialog(null, panel);
-        
-        
-        
-        if(externalDrives.getSelectedItem() != null){
-        	
-        } else {
-        	System.exit(0);
-        }
-
-		
-
-		String[] logs = DeviceManager.getDevices();
-		Arrays.sort(logs);
-		for (String device : logs) {
-			externalDrives.addItem(device);
-		}*/
 		
 		/*logsTable.addMouseListener(new MouseAdapter(){
 			@Override
@@ -187,12 +186,10 @@ public class Window implements Observer {
         logPanel.setLayout(new BorderLayout());
         
         logTextPane = new JEditorPane();
-        //logTextPane.setEditable(false);
+        logTextPane.setEditable(false);
         logTextPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        logTextPane.setText("Hallo Welt\n");
         logScrollPane = new JScrollPane(logTextPane);
         logScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
         
         logPanel.add(logScrollPane, BorderLayout.CENTER);
         
@@ -210,7 +207,7 @@ public class Window implements Observer {
 			e.printStackTrace();
 		}
         
-        leftPanel.add(mapPanel.createMapPanel(), BorderLayout.CENTER);
+        //leftPanel.add(mapPanel.createMapPanel(), BorderLayout.CENTER);
         leftPanel.add(logPanel, BorderLayout.SOUTH);
         
         rightPanel.add(logsTableScrollPane);
@@ -225,7 +222,22 @@ public class Window implements Observer {
 				//mapPanel.setBackground(Color.orange);
 			}
 		});
-        frame.add(splitPane);
+        frame.add(splitPane, BorderLayout.CENTER);
+        
+        JPanel statusBar = new JPanel();
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.LINE_AXIS));
+        
+        statusBar.setBackground(Color.green);
+        JLabel leftStatus = new JLabel("test");
+        statusBar.add(leftStatus);
+        
+        statusBar.add(Box.createHorizontalGlue());
+
+        JLabel rightStatus = new JLabel("test2");
+        statusBar.add(rightStatus);
+        
+        frame.add(statusBar, BorderLayout.PAGE_END);
         
         frame.setVisible(true);
         frame.pack();
@@ -233,10 +245,6 @@ public class Window implements Observer {
         //mapPanel.setMinimumSize(new Dimension(800, 600));
 
         //splitPane.setDividerLocation(test.getWidth()/3*2);
-        Logger.log("Test");
-        Logger.log("Test1");
-        Logger.log("Test2");
-        Logger.log("Test3");
 
     }
 
