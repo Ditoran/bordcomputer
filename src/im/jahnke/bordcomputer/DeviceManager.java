@@ -15,7 +15,7 @@ public class DeviceManager {
 		return devices;
 	}
 	
-	public static String getDevice(){
+	public static String findDevice(){
 		for (String s : getDevices()) {
 			File f = new File(s + ".BORD");
 			if(f.exists()){

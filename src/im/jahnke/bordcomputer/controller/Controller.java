@@ -24,6 +24,8 @@ public class Controller implements ActionListener, MouseListener {
 		this.model.addObserver(window);
 		Logger.getInstance().addObserver(window);
 	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -34,6 +36,7 @@ public class Controller implements ActionListener, MouseListener {
 			@SuppressWarnings("unchecked")
 			JComboBox<String> box = (JComboBox<String>)(e.getSource());
 			Logger.log("Device selected: " + box.getSelectedItem());
+			
 		} else {
 			System.out.println("Else: " + e.getSource());
 		}

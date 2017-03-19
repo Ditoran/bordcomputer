@@ -48,16 +48,13 @@ import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.model.LogFilesTableModel;
 
 public class Window implements Observer {
 	
 	JFrame frame;
 	JEditorPane logTextPane;
-	JToolBar toolBar;
-	JButton button;
-	JMenuBar menuBar;
-	JMenu menu;
-	JMenuItem item;
+	
 	JPanel menuPanel;
 	JPanel leftPanel;
 	JPanel rightPanel;
@@ -80,38 +77,7 @@ public class Window implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         
-        menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(2, 1));
-        
-        toolBar = new JToolBar();
-        toolBar.setFloatable(false);      
-        
-        button = new JButton();
-        button.setIcon(new ImageIcon("icons/usb.png"));
-        button.setMargin(new Insets(0,0,0,0));
-        button.setPreferredSize(new Dimension(16, 16));
-        
-        button.setActionCommand(ActionCommands.TOOLBAR_USB);
-        button.addActionListener(controller);
-        
-        toolBar.add(button);
-        
-        menuBar = new JMenuBar();
-        
-        menu = new JMenu("Datei");
-        
-        item = new JMenuItem("Öffnen");
-        
-        menu.add(item);
-        
-        menuBar.add(menu);
-                
-        menuPanel.add(menuBar);
-        menuPanel.add(toolBar);
-        
-        
-        frame.add(menuPanel, BorderLayout.BEFORE_FIRST_LINE);
-        
+        frame.add(new MenuPanel(controller), BorderLayout.PAGE_START);
         
         leftPanel = new JPanel();
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -129,7 +95,7 @@ public class Window implements Observer {
 
         
         tableModel = new DefaultTableModel(logsTableColumns, 0);
-        logsTable = new JTable(tableModel);
+        logsTable = new JTable(new LogFilesTableModel());
         
         /*String[] logs = DeviceManager.getDevices();
 		Arrays.sort(logs);
@@ -144,17 +110,6 @@ public class Window implements Observer {
 		String[] logs = DeviceManager.getDevices();
 		Arrays.sort(logs);
 		System.out.println(Arrays.toString(logs));*/
-        
-        
-		
-		/*logsTable.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mouseClicked(MouseEvent e){
-				int row = logsTable.rowAtPoint(e.getPoint());
-				int column = logsTable.columnAtPoint(e.getPoint());
-				logsTable.addColumnSelectionInterval(0, tableModel.getColumnCount()-1);
-			}
-		});*/
         
         logsTable.addMouseListener(controller);
         logsTable.setName("test");
@@ -231,7 +186,6 @@ public class Window implements Observer {
         statusBar.setBackground(Color.green);
         JLabel leftStatus = new JLabel("test");
         statusBar.add(leftStatus);
-        
         statusBar.add(Box.createHorizontalGlue());
 
         JLabel rightStatus = new JLabel("test2");
@@ -242,9 +196,6 @@ public class Window implements Observer {
         frame.setVisible(true);
         frame.pack();
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        //mapPanel.setMinimumSize(new Dimension(800, 600));
-
-        //splitPane.setDividerLocation(test.getWidth()/3*2);
 
     }
 
@@ -252,6 +203,9 @@ public class Window implements Observer {
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Logger){
 			logTextPane.setText(((Logger)arg).getText());
+		} else if(arg instanceof JTable){
+			
+			
 		}
 	}
 }

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 
+import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.Controller;
@@ -34,8 +35,8 @@ public class DeviceDialog extends JDialog {
 		
 		JComboBox<String> externalDrives = new JComboBox<String>();       
 
-		//String[] logs = DeviceManager.getDevices();
-		String[] logs = {"C:\\", "D:\\"};
+		String[] logs = DeviceManager.getDevices();
+		//String[] logs = {"C:\\", "D:\\"};
 		
 		Arrays.sort(logs);
 		for (String device : logs) {
