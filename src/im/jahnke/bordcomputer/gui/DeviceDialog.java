@@ -13,6 +13,7 @@ import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.controller.MenuController;
 
 public class DeviceDialog extends JDialog {
 
@@ -26,7 +27,7 @@ public class DeviceDialog extends JDialog {
 		
 	}
 	
-	public static void showDialog(Controller controller){
+	public static void showDialog(MenuController controller){
 		instance = new DeviceDialog();
 		instance.setModal(true);
 		//instance.setLayout(null);

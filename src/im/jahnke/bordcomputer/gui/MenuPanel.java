@@ -1,9 +1,5 @@
 package im.jahnke.bordcomputer.gui;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 
 import javax.swing.Box;
@@ -17,20 +13,20 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import im.jahnke.bordcomputer.controller.ActionCommands;
-import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.controller.MenuController;
 
 public class MenuPanel extends JPanel{
 	
 	private static final long serialVersionUID = -4626919742336966027L;
 	
-	JToolBar toolBar;
-	JButton button;
-	JMenuBar menuBar;
-	JMenu menuFile;
-	JMenu menuEdit;
-	JMenuItem item;
+	private JToolBar toolBar;
+	private JButton button;
+	private JMenuBar menuBar;
+	private JMenu menuFile;
+	private JMenu menuEdit;
+	private JMenuItem item;
 	
-	public MenuPanel(Controller controller) {
+	public MenuPanel(MenuController controller) {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         

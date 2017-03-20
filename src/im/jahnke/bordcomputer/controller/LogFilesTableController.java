@@ -10,7 +10,7 @@ public class LogFilesTableController {
 	
 	
 	public LogFilesTableController(Controller c) {
-		this.model = new LogFilesTableModel();
+		this.model = new LogFilesTableModel(this);
 		this.table = new LogFilesTable(this);
 		
 	}

@@ -2,82 +2,63 @@ package im.jahnke.bordcomputer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
-import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.Controller;
-import im.jahnke.bordcomputer.model.LogFilesTableModel;
+import im.jahnke.bordcomputer.controller.LogFilesTableController;
+import im.jahnke.bordcomputer.controller.MenuController;
 
 public class Window implements Observer {
 	
-	JFrame frame;
-	JEditorPane logTextPane;
+	private JFrame frame;
+	private JEditorPane logTextPane;
 	
-	JPanel menuPanel;
-	JPanel leftPanel;
-	JPanel rightPanel;
-	DefaultTableModel tableModel;
-	JTable logsTable;
-	JScrollPane logsTableScrollPane;
-	JTable trackpointTable;
-	JScrollPane trackpointTableScrollPane;
-	JPanel connectionPanel;
-	JPanel logDetailsPanel;
-	JPanel connectionPanel2;
-	JTabbedPane tabbedPane;
-	JPanel logPanel;
-	JScrollPane logScrollPane;
-	MapPanel mapPanel;
-	JSplitPane splitPane;
+	private JPanel leftPanel;
+	private JPanel rightPanel;
+	private JTable logsTable;
+	private JScrollPane logsTableScrollPane;
+	private JTable trackpointTable;
+	private JScrollPane trackpointTableScrollPane;
+	private JPanel connectionPanel;
+	private JPanel logDetailsPanel;
+	private JPanel connectionPanel2;
+	private JTabbedPane tabbedPane;
+	private JPanel logPanel;
+	private JScrollPane logScrollPane;
+	private MapPanel mapPanel;
+	private JSplitPane splitPane;
 	
     public Window(Controller controller) {
         frame = new JFrame("BordComputer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         
-        frame.add(new MenuPanel(controller), BorderLayout.PAGE_START);
+        MenuController mc = new MenuController(controller);
+        
+        frame.add(mc.getPanel(), BorderLayout.PAGE_START);
         
         leftPanel = new JPanel();
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -94,8 +75,10 @@ public class Window implements Observer {
         String[] trackpointTableColumns = {"Datum", "Lat", "Lon"};
 
         
-        tableModel = new DefaultTableModel(logsTableColumns, 0);
-        logsTable = new JTable(new LogFilesTableModel());
+        LogFilesTableController lftc = new LogFilesTableController(controller);
+        new DefaultTableModel(logsTableColumns, 0);
+        logsTable = lftc.getView();
+        logsTable.setValueAt("test", 0, 0);
         
         /*String[] logs = DeviceManager.getDevices();
 		Arrays.sort(logs);
@@ -158,6 +141,7 @@ public class Window implements Observer {
 				String[] s = sc.nextLine().split(";");
 				mapPanel.addTrackPoint(Double.parseDouble(s[0]), Double.parseDouble(s[1]));
 			}
+			sc.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

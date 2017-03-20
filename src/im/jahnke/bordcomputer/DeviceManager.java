@@ -36,5 +36,13 @@ public class DeviceManager {
 		return f.listFiles();
 		
 	}
+	
+	public static File[] listDummyLogs(){
+		File[] f = new File[5];
+		for (int i = 0; i < f.length; i++) {
+			f[i] = new File(System.currentTimeMillis()+".txt");
+		}
+		return f;
+	}
 
 }
