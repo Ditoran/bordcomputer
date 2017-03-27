@@ -31,6 +31,10 @@ public class DeviceManager {
 		defaultDevice = device;
 	}
 	
+	public static String getDefaultDevice(){
+		return defaultDevice;
+	}
+	
 	public static File[] listLogs(){
 		File f = new File(defaultDevice + "LOGS");
 		return f.listFiles();
