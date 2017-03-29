@@ -27,11 +27,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
-import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
 import im.jahnke.bordcomputer.controller.MenuController;
 
-public class Window implements Observer {
+public class MainWindow implements Observer {
 	
 	private JFrame frame;
 	private JEditorPane logTextPane;
@@ -51,7 +51,7 @@ public class Window implements Observer {
 	private MapPanel mapPanel;
 	private JSplitPane splitPane;
 	
-    public Window(Controller controller) {
+    public MainWindow(MainController controller) {
         frame = new JFrame("BordComputer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));

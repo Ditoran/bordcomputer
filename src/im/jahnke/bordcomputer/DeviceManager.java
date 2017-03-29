@@ -24,7 +24,7 @@ public class DeviceManager {
 				return defaultDevice;
 			}
 		}
-		return "";
+		return null;
 	}
 	
 	public static void setDefaultDevice(String device){

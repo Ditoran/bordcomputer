@@ -9,18 +9,18 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 
 import im.jahnke.bordcomputer.Logger;
-import im.jahnke.bordcomputer.gui.Window;
+import im.jahnke.bordcomputer.gui.MainWindow;
 import im.jahnke.bordcomputer.model.Model;
 
-public class Controller implements ActionListener, MouseListener {
+public class MainController implements ActionListener, MouseListener {
 	
-	private Window window;
+	private MainWindow window;
 	private Model model;
 	
 	private HashMap<String, IController> controller = new HashMap<>();
 	
-	public Controller() {
-		this.window = new Window(this);
+	public MainController() {
+		this.window = new MainWindow(this);
 		this.model = new Model();
 		this.model.addObserver(window);
 		Logger.getInstance().addObserver(window);
@@ -44,8 +44,8 @@ public class Controller implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() instanceof JTable){
 			JTable logsTable = (JTable)e.getSource();
-			int row = logsTable.rowAtPoint(e.getPoint());
-			int column = logsTable.columnAtPoint(e.getPoint());
+			//int row = logsTable.rowAtPoint(e.getPoint());
+			//int column = logsTable.columnAtPoint(e.getPoint());
 			logsTable.addColumnSelectionInterval(0, logsTable.getModel().getColumnCount()-1);
 		}
 	}

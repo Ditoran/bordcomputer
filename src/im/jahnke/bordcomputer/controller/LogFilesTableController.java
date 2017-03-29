@@ -9,7 +9,7 @@ public class LogFilesTableController {
 	private LogFilesTable table;
 	
 	
-	public LogFilesTableController(Controller c) {
+	public LogFilesTableController(MainController c) {
 		this.model = new LogFilesTableModel(this);
 		this.table = new LogFilesTable(this);
 		

@@ -2,7 +2,7 @@ package im.jahnke.bordcomputer;
 
 import javax.swing.SwingUtilities;
 
-import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.controller.MainController;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
-				new Controller();
+				new MainController();
 			}
 		});		
 

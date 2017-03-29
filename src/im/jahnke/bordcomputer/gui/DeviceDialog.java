@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.controller.ActionCommands;
-import im.jahnke.bordcomputer.controller.Controller;
+import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.MenuController;
 
 public class DeviceDialog extends JDialog {

@@ -11,10 +11,10 @@ import im.jahnke.bordcomputer.gui.MenuPanel;
 
 public class MenuController implements ActionListener{
 	
-	Controller controller;
+	MainController controller;
 	MenuPanel panel;
 	
-	public MenuController(Controller controller) {
+	public MenuController(MainController controller) {
 		this.controller = controller;
 		panel = new MenuPanel(this);
 	}
