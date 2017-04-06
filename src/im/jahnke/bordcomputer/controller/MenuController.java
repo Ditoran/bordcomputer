@@ -24,11 +24,11 @@ public class MenuController implements ActionListener{
 		if(e.getActionCommand().equals(ActionCommands.TOOLBAR_USB)){
 			Logger.log("USB clicked");
 			DeviceDialog.showDialog(this);
+			controller.actionPerformed(new ActionEvent(this, (int) System.currentTimeMillis(), ActionCommands.TOOLBAR_USB));
 		} else if(e.getActionCommand().equals(ActionCommands.DEVICE_DIALOG)){
 			@SuppressWarnings("unchecked")
 			JComboBox<String> box = (JComboBox<String>)(e.getSource());
 			Logger.log("Device selected: " + box.getSelectedItem());
-			
 		}
 	}
 	

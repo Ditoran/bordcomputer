@@ -1,6 +1,7 @@
 package im.jahnke.bordcomputer.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -11,7 +12,7 @@ public class LogFilesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 9115406942124496525L;
 	
 	String[] columns = {"ID", "Datum", "Lat", "Lon", "Open"};
-	ArrayList<String[]> data = new ArrayList<>();
+	ArrayList<LogFileTableData> data = new ArrayList<>();
 	
 	
 	
@@ -20,7 +21,11 @@ public class LogFilesTableModel extends AbstractTableModel {
 	public LogFilesTableModel(LogFilesTableController controller) {
 		this.controller = controller;
 		
-		data.add(new String[] {"", "", "", "", ""});
+		data.add(new LogFileTableData(1, new Date(), 3.14, 2.7172, ""));
+	}
+	
+	public void readLogFiles(){
+		
 	}
 
 	@Override
@@ -30,9 +35,9 @@ public class LogFilesTableModel extends AbstractTableModel {
 	
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		String[] array = data.get(rowIndex);
+		/*String[] array = data.get(rowIndex);
 		array[columnIndex] = (String) aValue;
-		data.set(rowIndex, array);
+		data.set(rowIndex, array);*/
 		//fireTableCellUpdated(rowIndex, columnIndex);
 	}
 	
@@ -48,7 +53,39 @@ public class LogFilesTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
-		return data.get(arg0)[arg1];
+		switch(arg1){
+		case 0:
+			return data.get(arg0).id;
+		case 1:
+			return data.get(arg0).date;
+		case 2:
+			return data.get(arg0).latitude;
+		case 3:
+			return data.get(arg0).longitude;
+		case 4:
+			return data.get(arg0).open;
+		default:
+			return "";
+		
+		}
+	}
+	
+	class LogFileTableData
+	{
+		private int id;
+		private Date date;
+		private double latitude;
+		private double longitude;
+		private String open;
+
+		public LogFileTableData(int id, Date date, double latitude, double longitude, String open) {
+			this.id = id;
+			this.date = date;
+			this.latitude = latitude;
+			this.longitude = longitude;
+			this.open = open;
+		}
+		
 	}
 
 }

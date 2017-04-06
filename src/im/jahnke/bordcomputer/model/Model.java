@@ -3,7 +3,7 @@ package im.jahnke.bordcomputer.model;
 import java.io.File;
 import java.util.Observable;
 
-import im.jahnke.bordcomputer.DeviceManager;
+import im.jahnke.bordcomputer.misc.DeviceManager;
 
 public class Model extends Observable {
 	

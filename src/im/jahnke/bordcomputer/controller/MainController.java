@@ -16,9 +16,7 @@ public class MainController implements ActionListener, MouseListener {
 	
 	private MainWindow window;
 	private Model model;
-	
-	private HashMap<String, IController> controller = new HashMap<>();
-	
+		
 	public MainController() {
 		this.window = new MainWindow(this);
 		this.model = new Model();
@@ -35,6 +33,8 @@ public class MainController implements ActionListener, MouseListener {
 			JComboBox<String> box = (JComboBox<String>)(e.getSource());
 			Logger.log("Device selected: " + box.getSelectedItem());
 			
+		} else if(e.getActionCommand().equals(ActionCommands.TOOLBAR_USB)){
+			
 		} else {
 			System.out.println("Else: " + e.getSource());
 		}
@@ -42,12 +42,7 @@ public class MainController implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() instanceof JTable){
-			JTable logsTable = (JTable)e.getSource();
-			//int row = logsTable.rowAtPoint(e.getPoint());
-			//int column = logsTable.columnAtPoint(e.getPoint());
-			logsTable.addColumnSelectionInterval(0, logsTable.getModel().getColumnCount()-1);
-		}
+		
 	}
 
 	@Override

@@ -9,11 +9,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 
-import im.jahnke.bordcomputer.DeviceManager;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.MenuController;
+import im.jahnke.bordcomputer.misc.DeviceManager;
 
 public class DeviceDialog extends JDialog {
 

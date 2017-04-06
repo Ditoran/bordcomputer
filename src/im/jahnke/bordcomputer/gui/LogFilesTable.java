@@ -11,6 +11,7 @@ public class LogFilesTable extends JTable {
 
 	public LogFilesTable(LogFilesTableController logFilesTableController) {
 		setModel(new LogFilesTableModel(logFilesTableController));
+		addMouseListener(logFilesTableController);
 	}
 	
 }

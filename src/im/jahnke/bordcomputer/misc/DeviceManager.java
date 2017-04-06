@@ -1,4 +1,4 @@
-package im.jahnke.bordcomputer;
+package im.jahnke.bordcomputer.misc;
 
 import java.io.File;
 
