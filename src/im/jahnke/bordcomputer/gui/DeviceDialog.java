@@ -12,7 +12,6 @@ import javax.swing.JDialog;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.MainController;
-import im.jahnke.bordcomputer.controller.MenuController;
 import im.jahnke.bordcomputer.misc.DeviceManager;
 
 public class DeviceDialog extends JDialog {
@@ -27,7 +26,7 @@ public class DeviceDialog extends JDialog {
 		
 	}
 	
-	public static void showDialog(MenuController controller){
+	public static void showDialog(MainController controller){
 		instance = new DeviceDialog();
 		instance.setModal(true);
 		//instance.setLayout(null);
@@ -43,7 +42,8 @@ public class DeviceDialog extends JDialog {
 		for (String device : logs) {
 			externalDrives.addItem(device);
 		}
-		externalDrives.setActionCommand(ActionCommands.DEVICE_DIALOG);		
+		externalDrives.setActionCommand(ActionCommands.DEVICE_DIALOG);	
+		externalDrives.setSelectedItem(DeviceManager.findDevice());
 		
 		instance.getContentPane().add(externalDrives, BorderLayout.NORTH);
 		
@@ -51,10 +51,10 @@ public class DeviceDialog extends JDialog {
 		closeButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				externalDrives.addActionListener(controller);
-				externalDrives.setSelectedItem(externalDrives.getSelectedItem());
+				DeviceManager.setDefaultDevice(externalDrives.getSelectedItem().toString());
+				Logger.log("Device " + DeviceManager.getDefaultDevice() + " is now set as default");
+				controller.actionPerformed(new ActionEvent(this, (int)System.currentTimeMillis(), ActionCommands.DEVICE_DIALOG));
 				instance.dispose();
-				
 			}
 		});
 		instance.getContentPane().add(closeButton, BorderLayout.SOUTH);

@@ -33,7 +33,7 @@ public class TrackPoint {
 	 * @return Distance in KM
 	 */
 	public static double distanceBetweenTrackPoints(TrackPoint tp1, TrackPoint tp2){
-		double d =  3959 * Math.acos( Math.cos( Math.toRadians(tp2.getLatitude()) ) 
+		double d =  6371 * Math.acos( Math.cos( Math.toRadians(tp2.getLatitude()) ) 
 							* Math.cos( Math.toRadians( tp1.getLatitude() ) ) 
 							* Math.cos( Math.toRadians( tp1.getLongitude() ) - Math.toRadians(tp2.getLongitude()) )
 							+ Math.sin( Math.toRadians(tp2.getLatitude()) ) 

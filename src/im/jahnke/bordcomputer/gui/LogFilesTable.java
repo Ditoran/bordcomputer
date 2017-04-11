@@ -9,8 +9,8 @@ public class LogFilesTable extends JTable {
 
 	private static final long serialVersionUID = -1073289710515753940L;
 
-	public LogFilesTable(LogFilesTableController logFilesTableController) {
-		setModel(new LogFilesTableModel(logFilesTableController));
+	public LogFilesTable(LogFilesTableController logFilesTableController, LogFilesTableModel logFilesTableModel) {
+		setModel(logFilesTableModel);
 		addMouseListener(logFilesTableController);
 	}
 	

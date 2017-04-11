@@ -27,6 +27,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
+import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
 import im.jahnke.bordcomputer.controller.MenuController;
@@ -50,15 +51,23 @@ public class MainWindow implements Observer {
 	private JScrollPane logScrollPane;
 	private MapPanel mapPanel;
 	private JSplitPane splitPane;
+	private MenuPanel menuPanel;
 	
-    public MainWindow(MainController controller) {
+	private MainController controller;
+	LogFilesTableController lftc;
+	
+    public MainWindow() {
         frame = new JFrame("BordComputer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
         
-        MenuController mc = new MenuController(controller);
+        controller = new MainController(this);
         
-        frame.add(mc.getPanel(), BorderLayout.PAGE_START);
+        Logger.getInstance().addObserver(this);
+        
+        menuPanel = new MenuPanel(controller);
+        
+        frame.add(menuPanel, BorderLayout.PAGE_START);
         
         leftPanel = new JPanel();
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -71,28 +80,11 @@ public class MainWindow implements Observer {
         rightPanel.setLayout(new GridLayout(3, 1));
 
         String[][] data = {{"1", "24.02.2017", "", "", ""}, {"", "", "", "", ""}};
-        String[] logsTableColumns = {"ID", "Datum", "Lat", "Lon", "Open"};
         String[] trackpointTableColumns = {"Datum", "Lat", "Lon"};
-
         
-        LogFilesTableController lftc = new LogFilesTableController(controller);
-        new DefaultTableModel(logsTableColumns, 0);
+        lftc = new LogFilesTableController(controller);
         logsTable = lftc.getView();
         logsTable.setValueAt("test", 0, 0);
-        
-        /*String[] logs = DeviceManager.getDevices();
-		Arrays.sort(logs);
-		System.out.println(Arrays.toString(logs));
-
-		JComboBox externalDrives = new JComboBox();
-
-		for (String file : logs) {
-			tableModel.addRow(new String[]{file.getName()});
-		}
-		
-		String[] logs = DeviceManager.getDevices();
-		Arrays.sort(logs);
-		System.out.println(Arrays.toString(logs));*/
         
         logsTable.addMouseListener(controller);
         logsTable.setName("test");
@@ -182,6 +174,10 @@ public class MainWindow implements Observer {
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
     }
+    
+    public void addRoute(Route route) {
+		lftc.addRoute(route);
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {

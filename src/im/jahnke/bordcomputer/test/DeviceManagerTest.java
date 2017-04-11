@@ -2,6 +2,8 @@ package im.jahnke.bordcomputer.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,13 +23,20 @@ public class DeviceManagerTest {
 	@Test
 	public void testGetDevices() {
 		String test[] = DeviceManager.getDevices();
-		assertEquals(3, test.length);
+		System.out.println(Arrays.toString(test));
+		assertEquals(4, test.length);
 	}
 
 	@Test
 	public void testSetDefaultDevice() {
 		DeviceManager.setDefaultDevice("D:\\");
 		assertEquals(DeviceManager.getDefaultDevice(), "D:\\");
+	}
+	
+	@Test
+	public void testFindDevice(){
+		String device = DeviceManager.findDevice();
+		assertEquals("F:\\", device);
 	}
 
 }

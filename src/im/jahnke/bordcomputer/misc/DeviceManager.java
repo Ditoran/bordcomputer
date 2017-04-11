@@ -11,7 +11,7 @@ public class DeviceManager {
 		String[] devices = new String[f.length];
 		for (int i = 0; i < f.length; i++) {
 			devices[i] = f[i].toString();
-		}		
+		}
 		return devices;
 	}
 	
@@ -20,8 +20,7 @@ public class DeviceManager {
 			File f = new File(s + ".BORD");
 			if(f.exists()){
 				System.out.println("SD-Karte gefunden!");
-				defaultDevice = f.getParent();
-				return defaultDevice;
+				return s;
 			}
 		}
 		return null;

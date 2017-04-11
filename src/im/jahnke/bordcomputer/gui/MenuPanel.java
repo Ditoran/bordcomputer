@@ -1,6 +1,8 @@
 package im.jahnke.bordcomputer.gui;
 
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import im.jahnke.bordcomputer.controller.ActionCommands;
+import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.MenuController;
 
 public class MenuPanel extends JPanel{
@@ -26,7 +29,7 @@ public class MenuPanel extends JPanel{
 	private JMenu menuEdit;
 	private JMenuItem item;
 	
-	public MenuPanel(MenuController controller) {
+	public MenuPanel(MainController controller) {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
@@ -45,7 +48,11 @@ public class MenuPanel extends JPanel{
         button.setIcon(new ImageIcon("icons/usb.png"));
         button.setMargin(new Insets(0,0,0,0));
         button.setActionCommand(ActionCommands.TOOLBAR_USB);
-        button.addActionListener(controller);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               controller.connectButtonActionPerformed(e);
+            }
+         });
         toolBar.add(button);
         toolBar.add(Box.createHorizontalGlue());
         

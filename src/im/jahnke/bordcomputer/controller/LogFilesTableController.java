@@ -5,6 +5,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
 
+import im.jahnke.bordcomputer.Logger;
+import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.gui.LogFilesTable;
 import im.jahnke.bordcomputer.model.LogFilesTableModel;
 
@@ -16,18 +18,24 @@ public class LogFilesTableController implements MouseListener{
 	
 	public LogFilesTableController(MainController c) {
 		this.model = new LogFilesTableModel(this);
-		this.table = new LogFilesTable(this);
+		this.table = new LogFilesTable(this, this.model);
 		
 	}
 	
 	public LogFilesTable getView(){
 		return table;
 	}
+	
+	public void addRoute(Route file){
+		model.addData(file);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() instanceof JTable){
 			this.table.addColumnSelectionInterval(0, table.getModel().getColumnCount()-1);
+			int row = table.rowAtPoint(e.getPoint());
+			Logger.log(model.getAllData().get(row).toString());
 		}
 	}
 

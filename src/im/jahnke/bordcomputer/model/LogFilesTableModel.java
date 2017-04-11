@@ -1,10 +1,14 @@
 package im.jahnke.bordcomputer.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
+import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
 
 public class LogFilesTableModel extends AbstractTableModel {
@@ -12,33 +16,33 @@ public class LogFilesTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 9115406942124496525L;
 	
 	String[] columns = {"ID", "Datum", "Lat", "Lon", "Open"};
-	ArrayList<LogFileTableData> data = new ArrayList<>();
-	
-	
+	ArrayList<Route> data = new ArrayList<>();
 	
 	LogFilesTableController controller;
 	
 	public LogFilesTableModel(LogFilesTableController controller) {
 		this.controller = controller;
-		
-		data.add(new LogFileTableData(1, new Date(), 3.14, 2.7172, ""));
 	}
 	
-	public void readLogFiles(){
+	public void addData(Route route){
+		data.add(route);
+		Collections.sort(data, new Comparator<Route>() {
+			@Override
+			public int compare(Route o1, Route o2) {
+				return Integer.compare(o1.getID(), o2.getID());
+			}
+        });
+		fireTableDataChanged();
 		
+	}
+	
+	public ArrayList<Route> getAllData(){
+		return data;
 	}
 
 	@Override
 	public int getColumnCount() {
 		return columns.length;
-	}
-	
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		/*String[] array = data.get(rowIndex);
-		array[columnIndex] = (String) aValue;
-		data.set(rowIndex, array);*/
-		//fireTableCellUpdated(rowIndex, columnIndex);
 	}
 	
 	@Override
@@ -55,37 +59,19 @@ public class LogFilesTableModel extends AbstractTableModel {
 	public Object getValueAt(int arg0, int arg1) {
 		switch(arg1){
 		case 0:
-			return data.get(arg0).id;
+			return data.get(arg0).getID();
 		case 1:
-			return data.get(arg0).date;
+			SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+			return formatter.format(data.get(arg0).getStartDate());
 		case 2:
-			return data.get(arg0).latitude;
+			return data.get(arg0).getStartPoint().getLatitude();
 		case 3:
-			return data.get(arg0).longitude;
+			return data.get(arg0).getStartPoint().getLongitude();
 		case 4:
-			return data.get(arg0).open;
+			return "";
 		default:
 			return "";
 		
 		}
 	}
-	
-	class LogFileTableData
-	{
-		private int id;
-		private Date date;
-		private double latitude;
-		private double longitude;
-		private String open;
-
-		public LogFileTableData(int id, Date date, double latitude, double longitude, String open) {
-			this.id = id;
-			this.date = date;
-			this.latitude = latitude;
-			this.longitude = longitude;
-			this.open = open;
-		}
-		
-	}
-
 }

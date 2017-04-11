@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class LogFile {
+public class Route {
 	
 	private int id;
 	private File file;
@@ -15,13 +15,46 @@ public class LogFile {
 	private ArrayList<TrackPoint> trackPoints = new ArrayList<>();
 	
 	
-	public LogFile(File file) {
+	public Route(File file) {
 		this.file = file;
+		this.id = Integer.parseInt(file.getName().split("\\.")[0]);
 		parse();
 	}
 	
 	public ArrayList<TrackPoint> getTrackPoints(){
 		return trackPoints;
+	}
+	
+	public int getID(){
+		return id;
+	}
+	
+	public Date getStartDate(){
+		if(trackPoints.size()!=0){
+			return trackPoints.get(0).getDate();
+		}
+		return null;		
+	}
+	
+	public Date getEndDate(){
+		if(trackPoints.size()!=0){
+			return trackPoints.get(trackPoints.size()-1).getDate();
+		}
+		return null;		
+	}
+	
+	public TrackPoint getStartPoint(){
+		if(trackPoints.size()!=0){
+			return trackPoints.get(0);
+		}
+		return null;		
+	}
+	
+	public TrackPoint getEndPoint(){
+		if(trackPoints.size()!=0){
+			return trackPoints.get(trackPoints.size()-1);
+		}
+		return null;		
 	}
 	
 	public double getDistance(){
@@ -55,15 +88,19 @@ public class LogFile {
 	
 	private void parseLine(String[] line){
 		try {
-			double latitude = Double.parseDouble(line[1]);
-			double longitude = Double.parseDouble(line[2]);
+			double latitude = Double.parseDouble(line[0]);
+			double longitude = Double.parseDouble(line[1]);
 			SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-	        Date date = formatter.parse(line[3]);
+	        Date date = formatter.parse(line[2]);
 			TrackPoint tp = new TrackPoint(latitude, longitude, date);
 			trackPoints.add(tp);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String toString(){
+		return String.format("ID: %d, %s, %s, %s, %s, %f", id, getStartDate(), getEndDate(), getStartPoint(), getEndPoint(), getDistance());
 	}
 
 }
