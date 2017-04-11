@@ -16,7 +16,6 @@ import javax.swing.JToolBar;
 
 import im.jahnke.bordcomputer.controller.ActionCommands;
 import im.jahnke.bordcomputer.controller.MainController;
-import im.jahnke.bordcomputer.controller.MenuController;
 
 public class MenuPanel extends JPanel{
 	

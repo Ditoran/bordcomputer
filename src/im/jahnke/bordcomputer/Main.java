@@ -1,11 +1,8 @@
 package im.jahnke.bordcomputer;
 
-import java.awt.Font;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.gui.MainWindow;
 
 public class Main {

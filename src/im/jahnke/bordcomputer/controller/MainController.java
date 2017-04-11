@@ -5,10 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.HashMap;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.gui.DeviceDialog;

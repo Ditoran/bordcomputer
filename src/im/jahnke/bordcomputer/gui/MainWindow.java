@@ -24,13 +24,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.table.DefaultTableModel;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
 import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
-import im.jahnke.bordcomputer.controller.MenuController;
 
 public class MainWindow implements Observer {
 	
