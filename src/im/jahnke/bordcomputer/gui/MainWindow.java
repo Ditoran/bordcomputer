@@ -24,6 +24,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import org.jxmapviewer.JXMapViewer;
+
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
 import im.jahnke.bordcomputer.Route;
@@ -113,13 +118,16 @@ public class MainWindow implements Observer {
         logTextPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         logScrollPane = new JScrollPane(logTextPane);
         logScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        //logScrollPane.setBorder(new EmptyBorder( 5, 0, 0, 0 ));
         
         logPanel.add(logScrollPane, BorderLayout.CENTER);
         
         mapPanel = new MapPanel();
-        leftPanel.add(mapPanel.initMapPanel(), BorderLayout.NORTH);
+        JXMapViewer viewer = mapPanel.initMapPanel();
+        viewer.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        leftPanel.add(viewer, BorderLayout.CENTER);
         
-        leftPanel.add(logPanel, BorderLayout.SOUTH);
+        leftPanel.add(logPanel, BorderLayout.PAGE_END);
         
         rightPanel.add(logsTableScrollPane);
         rightPanel.add(tabbedPane);
