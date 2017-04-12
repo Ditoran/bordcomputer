@@ -23,7 +23,7 @@ public class Main {
 			public void run() {
 				Model model = new Model();
 				MainWindow window = new MainWindow();
-				MainController controller = new MainController(model, window);
+				new MainController(model, window);
 			}
 		});		
 

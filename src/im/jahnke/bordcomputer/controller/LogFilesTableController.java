@@ -7,21 +7,20 @@ import javax.swing.JTable;
 
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.Route;
-import im.jahnke.bordcomputer.gui.LogFilesTable;
 import im.jahnke.bordcomputer.model.LogFilesTableModel;
 
 public class LogFilesTableController implements MouseListener{
 	
 	private LogFilesTableModel model;
-	private LogFilesTable table;
+	private JTable table;
 	
 	
 	public LogFilesTableController() {
 		this.model = new LogFilesTableModel(this);
-		this.table = new LogFilesTable(model);
+		this.table = new JTable(model);
 	}
 	
-	public LogFilesTable getView(){
+	public JTable getView(){
 		return table;
 	}
 	

@@ -1,9 +1,5 @@
 package im.jahnke.bordcomputer.gui;
 
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -14,10 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import im.jahnke.bordcomputer.controller.ActionCommands;
-import im.jahnke.bordcomputer.controller.MainController;
-
-public class MenuPanel extends JPanel{
+public class MenuBar extends JPanel{
 	
 	private static final long serialVersionUID = -4626919742336966027L;
 	
@@ -36,7 +29,7 @@ public class MenuPanel extends JPanel{
 	private JMenuItem menuItemSettings;
 	private JMenuItem menuItemAbout;
 	
-	public MenuPanel() {
+	public MenuBar() {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         

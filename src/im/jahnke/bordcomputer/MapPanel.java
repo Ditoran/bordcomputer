@@ -36,10 +36,124 @@ public class MapPanel {
 	List<GeoPosition> track = new ArrayList<>();
 	JXMapViewer mapViewer;
 	
-	public JXMapViewer createMapPanel() {
+	public JXMapViewer initMapPanel() {
 		
 		mapViewer = new JXMapViewer();
+		// Create a TileFactoryInfo for OpenStreetMap
+				TileFactoryInfo info = new OSMTileFactoryInfo();
+				DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+				tileFactory.setThreadPoolSize(8);
+				mapViewer.setTileFactory(tileFactory);	
 
+				RoutePainter routePainter = new RoutePainter(track);
+				mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+				
+				if(track.size()==0){
+					GeoPosition gp = new GeoPosition(52.517580, 13.405520);
+					track.add(gp);
+					mapViewer.setZoom(17);
+				}
+
+				// Set the focus
+				
+				
+				mapViewer.addComponentListener(new ComponentAdapter() {			
+					@Override
+					public void componentResized(ComponentEvent e) {
+						mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
+					}
+				});
+
+				// Create a compound painter that uses both the route-painter and the
+				// waypoint-painter
+				List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+				painters.add(routePainter);
+				// painters.add(waypointPainter);
+
+				CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+				mapViewer.setOverlayPainter(painter);
+				mapViewer.getViewportBounds();
+
+				mapViewer.addKeyListener(new KeyAdapter() {
+
+					@Override
+					public void keyPressed(KeyEvent e) {
+						switch (e.getKeyCode()) {
+						case KeyEvent.VK_W:
+							mapViewer.setCenter(
+									new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() - 100));
+							break;
+						case KeyEvent.VK_A:
+							mapViewer.setCenter(
+									new Point.Double(mapViewer.getCenter().getX() - 100, mapViewer.getCenter().getY()));
+							break;
+						case KeyEvent.VK_S:
+							mapViewer.setCenter(
+									new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() + 100));
+							break;
+						case KeyEvent.VK_D:
+							mapViewer.setCenter(
+									new Point.Double(mapViewer.getCenter().getX() + 100, mapViewer.getCenter().getY()));
+							break;
+						case KeyEvent.VK_PLUS:
+							mapViewer.setZoom(mapViewer.getZoom() - 1);
+							break;
+						case KeyEvent.VK_MINUS:
+							mapViewer.setZoom(mapViewer.getZoom() + 1);
+							break;
+						default:
+							break;
+						}
+					}
+				});
+				
+				mapViewer.addMouseWheelListener(new MouseWheelListener() {
+					
+					@Override
+					public void mouseWheelMoved(MouseWheelEvent e) {
+						if(e.getWheelRotation()>0) {
+							mapViewer.setZoom(mapViewer.getZoom() + 1);
+							e.getPoint();
+						} else {
+							mapViewer.setZoom(mapViewer.getZoom() - 1);
+						}
+					}
+				});
+				
+				
+				MouseAdapter ma = new MouseAdapter() {			
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Test.mousePosition = e.getPoint();
+						mapViewer.requestFocus();
+					}
+				};		
+				mapViewer.addMouseListener(ma);
+				
+				MouseMotionAdapter mma = new MouseMotionAdapter() {
+				
+					@Override
+					public void mouseDragged(MouseEvent e) {
+						
+						System.out.println(e.getPoint().toString());
+						int diffX = Test.mousePosition.x - e.getPoint().x;
+						int diffY = Test.mousePosition.y - e.getPoint().y;
+						System.out.printf("x: %d, y: %d\n", diffX, diffY);
+						mapViewer.setCenter(new Point.Double(mapViewer.getCenter().getX()+diffX, mapViewer.getCenter().getY()+diffY));
+						Test.mousePosition = e.getPoint();
+					}
+				};
+				
+				mapViewer.addMouseMotionListener(mma);
+		return mapViewer;
+		
+	}
+	
+	public void fillMapPanel(Route route){
+		
+		for (TrackPoint tp : route.getTrackPoints()) {
+			addTrackPoint(tp.getLatitude(), tp.getLongitude());
+		}
 		// Create a TileFactoryInfo for OpenStreetMap
 		TileFactoryInfo info = new OSMTileFactoryInfo();
 		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
@@ -61,7 +175,6 @@ public class MapPanel {
 		mapViewer.addComponentListener(new ComponentAdapter() {			
 			@Override
 			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
 				mapViewer.zoomToBestFit(new HashSet<GeoPosition>(track), 0.7);
 			}
 		});
@@ -147,12 +260,9 @@ public class MapPanel {
 		};
 		
 		mapViewer.addMouseMotionListener(mma);
-		
-		return mapViewer;
-		
 	}
 	
-	public void addTrackPoint(double latitude, double longitude){
+	private void addTrackPoint(double latitude, double longitude){
 		GeoPosition gp = new GeoPosition(latitude, longitude);
 		track.add(gp);
 	}

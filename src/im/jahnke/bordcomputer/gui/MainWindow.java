@@ -49,7 +49,7 @@ public class MainWindow implements Observer {
 	private JScrollPane logScrollPane;
 	private MapPanel mapPanel;
 	private JSplitPane splitPane;
-	private MenuPanel menuPanel;
+	private MenuBar menuPanel;
 	
 	LogFilesTableController lftc;
 	
@@ -60,7 +60,7 @@ public class MainWindow implements Observer {
                
         Logger.getInstance().addObserver(this);
         
-        menuPanel = new MenuPanel();
+        menuPanel = new MenuBar();
         
         frame.add(menuPanel, BorderLayout.PAGE_START);
         
@@ -79,9 +79,7 @@ public class MainWindow implements Observer {
         
         lftc = new LogFilesTableController();
         logsTable = lftc.getView();
-        logsTable.setValueAt("test", 0, 0);
         
-        //logsTable.addMouseListener(controller);
         logsTable.setName("test");
         
         logsTableScrollPane = new JScrollPane(logsTable);
@@ -118,22 +116,9 @@ public class MainWindow implements Observer {
         
         logPanel.add(logScrollPane, BorderLayout.CENTER);
         
-        //leftPanel.add(mapPanel, BorderLayout.NORTH);
         mapPanel = new MapPanel();
-                
-        try {
-			File f = new File("res/12.txt");
-			Scanner sc = new Scanner(f);
-			while (sc.hasNextLine()) {
-				String[] s = sc.nextLine().split(";");
-				mapPanel.addTrackPoint(Double.parseDouble(s[0]), Double.parseDouble(s[1]));
-			}
-			sc.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        leftPanel.add(mapPanel.initMapPanel(), BorderLayout.NORTH);
         
-        //leftPanel.add(mapPanel.createMapPanel(), BorderLayout.CENTER);
         leftPanel.add(logPanel, BorderLayout.SOUTH);
         
         rightPanel.add(logsTableScrollPane);
@@ -170,16 +155,16 @@ public class MainWindow implements Observer {
 
     }
     
-    public void addRoute(Route route) {
-		lftc.addRoute(route);
-	}
-    
-	public JTable getLogsTable() {
-		return logsTable;
+	public LogFilesTableController getLogsTable() {
+		return lftc;
 	}
 
-	public MenuPanel getMenuPanel() {
+	public MenuBar getMenuPanel() {
 		return menuPanel;
+	}
+	
+	public MapPanel getMapPanel(){
+		return mapPanel;
 	}
 
 	@Override

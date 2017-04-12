@@ -1,10 +1,14 @@
 package im.jahnke.bordcomputer.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.gui.DeviceDialog;
@@ -31,7 +35,7 @@ public class MainController implements MouseListener {
 		for (File file : DeviceManager.listLogs()) {
 			Route route = new Route(file);
 			Logger.log("Reading file " + file.getName());
-			window.addRoute(route);
+			window.getLogsTable().addRoute(route);
 		}
 	}
 	
@@ -40,11 +44,33 @@ public class MainController implements MouseListener {
 		window.getMenuPanel().getMenuItemConnectSD().addActionListener(ae ->{
 			DeviceDialog.showDialog(this);
 		});
+		window.getMenuPanel().getMenuItemAbout().addActionListener(ae -> {
+			JOptionPane.showMessageDialog(null, "BordComputer Version 0.1.1", "Über...", JOptionPane.INFORMATION_MESSAGE);
+		});
+		
+		window.getMenuPanel().getMenuItemConnectUSB().addActionListener(ae -> {});
+		
+		window.getMenuPanel().getMenuItemExit().addActionListener(ae -> {});
+		
+		window.getMenuPanel().getMenuItemExport().addActionListener(ae -> {});
+		
+		window.getMenuPanel().getMenuItemImport().addActionListener(ae -> {});
+		
+		window.getMenuPanel().getMenuItemSettings().addActionListener(ae -> {});
+		
+		window.getLogsTable().getView().addMouseListener(this);
+		window.getLogsTable().getView().setName("LogFilesTable");
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		if(e.getClickCount() >= 2 && e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("LogFilesTable")){
+			JTable table = (JTable)e.getSource();
+			Logger.log("Row: " + table.rowAtPoint(e.getPoint()));
+			Route route = window.getLogsTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));
+			Logger.log("" + route.toString());
+			window.getMapPanel().fillMapPanel(route);
+		}
 	}
 
 	@Override
