@@ -27,8 +27,8 @@ import javax.swing.ScrollPaneConstants;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
 import im.jahnke.bordcomputer.Route;
-import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
+import im.jahnke.bordcomputer.controller.MainController;
 
 public class MainWindow implements Observer {
 	
@@ -51,19 +51,16 @@ public class MainWindow implements Observer {
 	private JSplitPane splitPane;
 	private MenuPanel menuPanel;
 	
-	private MainController controller;
 	LogFilesTableController lftc;
 	
     public MainWindow() {
         frame = new JFrame("BordComputer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
-        
-        controller = new MainController(this);
-        
+               
         Logger.getInstance().addObserver(this);
         
-        menuPanel = new MenuPanel(controller);
+        menuPanel = new MenuPanel();
         
         frame.add(menuPanel, BorderLayout.PAGE_START);
         
@@ -80,11 +77,11 @@ public class MainWindow implements Observer {
         String[][] data = {{"1", "24.02.2017", "", "", ""}, {"", "", "", "", ""}};
         String[] trackpointTableColumns = {"Datum", "Lat", "Lon"};
         
-        lftc = new LogFilesTableController(controller);
+        lftc = new LogFilesTableController();
         logsTable = lftc.getView();
         logsTable.setValueAt("test", 0, 0);
         
-        logsTable.addMouseListener(controller);
+        //logsTable.addMouseListener(controller);
         logsTable.setName("test");
         
         logsTableScrollPane = new JScrollPane(logsTable);
@@ -175,6 +172,14 @@ public class MainWindow implements Observer {
     
     public void addRoute(Route route) {
 		lftc.addRoute(route);
+	}
+    
+	public JTable getLogsTable() {
+		return logsTable;
+	}
+
+	public MenuPanel getMenuPanel() {
+		return menuPanel;
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class DeviceDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				DeviceManager.setDefaultDevice(externalDrives.getSelectedItem().toString());
 				Logger.log("Device " + DeviceManager.getDefaultDevice() + " is now set as default");
-				controller.actionPerformed(new ActionEvent(this, (int)System.currentTimeMillis(), ActionCommands.DEVICE_DIALOG));
+				controller.loadFilesFromDevice();
 				instance.dispose();
 			}
 		});

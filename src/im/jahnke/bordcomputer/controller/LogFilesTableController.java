@@ -16,14 +16,17 @@ public class LogFilesTableController implements MouseListener{
 	private LogFilesTable table;
 	
 	
-	public LogFilesTableController(MainController c) {
+	public LogFilesTableController() {
 		this.model = new LogFilesTableModel(this);
-		this.table = new LogFilesTable(this, this.model);
-		
+		this.table = new LogFilesTable(model);
 	}
 	
 	public LogFilesTable getView(){
 		return table;
+	}
+	
+	public LogFilesTableModel getModel(){
+		return model;
 	}
 	
 	public void addRoute(Route file){

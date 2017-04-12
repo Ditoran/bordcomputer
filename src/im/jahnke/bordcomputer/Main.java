@@ -3,7 +3,9 @@ package im.jahnke.bordcomputer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.gui.MainWindow;
+import im.jahnke.bordcomputer.model.Model;
 
 public class Main {
 
@@ -19,7 +21,9 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
-				new MainWindow();
+				Model model = new Model();
+				MainWindow window = new MainWindow();
+				MainController controller = new MainController(model, window);
 			}
 		});		
 

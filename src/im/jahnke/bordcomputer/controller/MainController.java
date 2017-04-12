@@ -12,35 +12,34 @@ import im.jahnke.bordcomputer.gui.MainWindow;
 import im.jahnke.bordcomputer.misc.DeviceManager;
 import im.jahnke.bordcomputer.model.Model;
 
-public class MainController implements ActionListener, MouseListener {
+public class MainController implements MouseListener {
 	
 	private Model model;
 	private MainWindow window;
 		
-	public MainController(MainWindow window) {
-		this.model = new Model();
+	public MainController(Model model, MainWindow window) {
+		this.model = model;
 		this.window = window;
-	}	
+		initActionListeners();
+	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals(ActionCommands.DEVICE_DIALOG)){
-			for (File file : DeviceManager.listLogs()) {
-				Route route = new Route(file);
-				Logger.log("Reading file " + file.getName());
-				window.addRoute(route);
-			}
-		} else if(e.getActionCommand().equals(ActionCommands.TOOLBAR_USB)){
-			
-		} else {
-			System.out.println("Else: " + e.getSource());
+	public void connectButtonActionPerformed(ActionEvent e) {
+			DeviceDialog.showDialog(this);			
+	}
+	
+	public void loadFilesFromDevice(){
+		for (File file : DeviceManager.listLogs()) {
+			Route route = new Route(file);
+			Logger.log("Reading file " + file.getName());
+			window.addRoute(route);
 		}
 	}
 	
-
-	public void connectButtonActionPerformed(ActionEvent e) {
+	public void initActionListeners(){
+		
+		window.getMenuPanel().getMenuItemConnectSD().addActionListener(ae ->{
 			DeviceDialog.showDialog(this);
-			
+		});
 	}
 
 	@Override
