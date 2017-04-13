@@ -34,6 +34,7 @@ import im.jahnke.bordcomputer.MapPanel;
 import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
 import im.jahnke.bordcomputer.controller.MainController;
+import im.jahnke.bordcomputer.controller.TrackPointTableController;
 
 public class MainWindow implements Observer {
 	
@@ -57,6 +58,7 @@ public class MainWindow implements Observer {
 	private MenuBar menuPanel;
 	
 	LogFilesTableController lftc;
+	TrackPointTableController tptc;
 	
     public MainWindow() {
         frame = new JFrame("BordComputer");
@@ -78,18 +80,13 @@ public class MainWindow implements Observer {
         rightPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         frame.add(rightPanel, BorderLayout.EAST);
         rightPanel.setLayout(new GridLayout(3, 1));
-
-        String[][] data = {{"1", "24.02.2017", "", "", ""}, {"", "", "", "", ""}};
-        String[] trackpointTableColumns = {"Datum", "Lat", "Lon"};
         
         lftc = new LogFilesTableController();
-        logsTable = lftc.getView();
-        
-        logsTable.setName("test");
-        
+        logsTable = lftc.getView();                
         logsTableScrollPane = new JScrollPane(logsTable);
         
-        trackpointTable = new JTable(data, trackpointTableColumns);
+        tptc = new TrackPointTableController();
+        trackpointTable = tptc.getView();
         trackpointTableScrollPane = new JScrollPane(trackpointTable);
         
         connectionPanel = new JPanel();
@@ -163,8 +160,12 @@ public class MainWindow implements Observer {
 
     }
     
-	public LogFilesTableController getLogsTable() {
+	public LogFilesTableController getLogFilesTable() {
 		return lftc;
+	}
+	
+	public TrackPointTableController getTrackPointTable() {
+		return tptc;
 	}
 
 	public MenuBar getMenuPanel() {

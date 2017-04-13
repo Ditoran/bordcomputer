@@ -1,6 +1,8 @@
-package im.jahnke.bordcomputer.misc;
+package im.jahnke.bordcomputer.util;
 
 import java.io.File;
+
+import im.jahnke.bordcomputer.Logger;
 
 public class DeviceManager {
 	
@@ -19,7 +21,7 @@ public class DeviceManager {
 		for (String s : getDevices()) {
 			File f = new File(s + ".BORD");
 			if(f.exists()){
-				System.out.println("SD-Karte gefunden!");
+				Logger.log(String.format("SD-Karte gefunden (%s)", s));
 				return s;
 			}
 		}

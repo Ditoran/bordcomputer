@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import im.jahnke.bordcomputer.misc.DeviceManager;
+import im.jahnke.bordcomputer.util.DeviceManager;
 
 public class DeviceManagerTest {
 

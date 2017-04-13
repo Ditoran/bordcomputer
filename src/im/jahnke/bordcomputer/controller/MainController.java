@@ -10,10 +10,11 @@ import javax.swing.JTable;
 
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.Route;
+import im.jahnke.bordcomputer.TrackPoint;
 import im.jahnke.bordcomputer.gui.DeviceDialog;
 import im.jahnke.bordcomputer.gui.MainWindow;
-import im.jahnke.bordcomputer.misc.DeviceManager;
 import im.jahnke.bordcomputer.model.Model;
+import im.jahnke.bordcomputer.util.DeviceManager;
 
 public class MainController implements MouseListener {
 	
@@ -24,6 +25,7 @@ public class MainController implements MouseListener {
 		this.model = model;
 		this.window = window;
 		initActionListeners();
+		deviceDetection();
 	}
 
 	public void connectButtonActionPerformed(ActionEvent e) {
@@ -34,7 +36,7 @@ public class MainController implements MouseListener {
 		for (File file : DeviceManager.listLogs()) {
 			Route route = new Route(file);
 			Logger.log("Reading file " + file.getName());
-			window.getLogsTable().addRoute(route);
+			window.getLogFilesTable().addRoute(route);
 		}
 	}
 	
@@ -57,18 +59,54 @@ public class MainController implements MouseListener {
 		
 		window.getMenuPanel().getMenuItemSettings().addActionListener(ae -> {});
 		
-		window.getLogsTable().getView().addMouseListener(this);
-		window.getLogsTable().getView().setName("LogFilesTable");
+		window.getLogFilesTable().getView().addMouseListener(this);
+		window.getLogFilesTable().getView().setName("LogFilesTable");
+		
+		window.getTrackPointTable().getView().addMouseListener(this);
+		window.getTrackPointTable().getView().setName("TrackPointsTable");
 	}
 
+	public void deviceDetection(){
+		Thread t = new Thread(new Runnable() {			
+			@Override
+			public void run() {
+				while(true){
+					String device;
+					if((device = DeviceManager.findDevice())!=null){
+						DeviceManager.setDefaultDevice(device);
+						loadFilesFromDevice();
+						break;
+					}
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		t.start();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() >= 2 && e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("LogFilesTable")){
 			JTable table = (JTable)e.getSource();
 			Logger.log("Row: " + table.rowAtPoint(e.getPoint()));
-			Route route = window.getLogsTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));
+			Route route = window.getLogFilesTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));
 			Logger.log("" + route.toString());
 			window.getMapPanel().fillMapPanel(route);
+			
+			window.getTrackPointTable().getModel().getAllData().clear();
+			for (TrackPoint trackpoint : route.getTrackPoints()) {
+				window.getTrackPointTable().getModel().addData(trackpoint);
+			}
+		}
+		if(e.getClickCount() >= 2 && e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("TrackPointsTable")){
+			JTable table = (JTable)e.getSource();
+			Logger.log("Row: " + table.rowAtPoint(e.getPoint()));
+			TrackPoint trackPoint = window.getTrackPointTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));
+			Logger.log("" + trackPoint.toString());
 		}
 	}
 

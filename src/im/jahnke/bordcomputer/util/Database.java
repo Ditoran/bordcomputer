@@ -1,4 +1,4 @@
-package im.jahnke.bordcomputer.misc;
+package im.jahnke.bordcomputer.util;
 
 import java.io.File;
 import java.sql.Connection;

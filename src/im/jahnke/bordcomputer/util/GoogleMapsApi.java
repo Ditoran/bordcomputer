@@ -1,4 +1,4 @@
-package im.jahnke.bordcomputer.misc;
+package im.jahnke.bordcomputer.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
