@@ -7,11 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,16 +21,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-
 import org.jxmapviewer.JXMapViewer;
 
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.MapPanel;
-import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.controller.LogFilesTableController;
-import im.jahnke.bordcomputer.controller.MainController;
 import im.jahnke.bordcomputer.controller.TrackPointTableController;
 
 public class MainWindow implements Observer {
@@ -47,8 +39,8 @@ public class MainWindow implements Observer {
 	private JScrollPane logsTableScrollPane;
 	private JTable trackpointTable;
 	private JScrollPane trackpointTableScrollPane;
-	private JPanel connectionPanel;
-	private JPanel logDetailsPanel;
+	private JPanel diagramPanel;
+	private LogDetailsPanel logDetailsPanel;
 	private JPanel connectionPanel2;
 	private JTabbedPane tabbedPane;
 	private JPanel logPanel;
@@ -89,11 +81,10 @@ public class MainWindow implements Observer {
         trackpointTable = tptc.getView();
         trackpointTableScrollPane = new JScrollPane(trackpointTable);
         
-        connectionPanel = new JPanel();
-        connectionPanel.setBackground(Color.DARK_GRAY);
+        diagramPanel = new JPanel();
+        diagramPanel.setBackground(Color.BLUE);
         
-        logDetailsPanel = new JPanel();
-        logDetailsPanel.setBackground(Color.DARK_GRAY);
+        logDetailsPanel = new LogDetailsPanel();
         
         connectionPanel2 = new JPanel();
         connectionPanel2.setBackground(Color.DARK_GRAY);
@@ -104,6 +95,7 @@ public class MainWindow implements Observer {
 
         tabbedPane.addTab("Routendetails", logDetailsPanel);
         tabbedPane.addTab("Trackpoints", trackpointTableScrollPane);
+        tabbedPane.addTab("Grafik", diagramPanel);
         
         logPanel = new JPanel();
         logPanel.setBackground(Color.red);
@@ -144,7 +136,6 @@ public class MainWindow implements Observer {
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.LINE_AXIS));
         
-        statusBar.setBackground(Color.green);
         JLabel leftStatus = new JLabel("test");
         statusBar.add(leftStatus);
         statusBar.add(Box.createHorizontalGlue());
@@ -174,6 +165,10 @@ public class MainWindow implements Observer {
 	
 	public MapPanel getMapPanel(){
 		return mapPanel;
+	}
+	
+	public LogDetailsPanel getLogDetailsPanel(){
+		return logDetailsPanel;
 	}
 
 	@Override

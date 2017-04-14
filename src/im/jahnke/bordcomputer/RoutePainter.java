@@ -47,7 +47,6 @@ public class RoutePainter implements Painter<JXMapViewer> {
 
 		// do the drawing again
 		g.setColor(color);
-		g.setStroke(new BasicStroke(1.5f));
 
 		drawRoute(g, map);
 
@@ -64,7 +63,11 @@ public class RoutePainter implements Painter<JXMapViewer> {
 		int lastX = 0;
 		int lastY = 0;
 
-		boolean first = true;
+		boolean first = true;		
+
+		int minZoom = map.getTileFactory().getInfo().getMaximumZoomLevel();
+		int maxZoom = map.getTileFactory().getInfo().getMaximumZoomLevel();
+		g.setStroke(new BasicStroke(0.3f * (maxZoom - map.getZoom())));
 
 		for (GeoPosition gp : track) {
 			// convert geo-coordinate to world bitmap pixel

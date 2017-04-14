@@ -6,12 +6,16 @@ public class TrackPoint {
 	
 	private double latitude;
 	private double longitude;
+	private int altitude;
 	private Date date;
+	private int speed;
 	
-	public TrackPoint(double latitude, double longitude, Date date) {
+	public TrackPoint(double latitude, double longitude, int altitude, Date date, int speed) {
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.altitude = altitude;
 		this.date = date;
+		this.speed = speed;
 	}
 
 	public double getLatitude() {
@@ -21,9 +25,17 @@ public class TrackPoint {
 	public double getLongitude() {
 		return longitude;
 	}
+	
+	public int getAltitude(){
+		return altitude;
+	}
 
 	public Date getDate() {
 		return date;
+	}
+	
+	public int getSpeed(){
+		return speed;
 	}
 	
 	/**

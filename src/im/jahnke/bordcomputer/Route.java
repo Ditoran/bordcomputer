@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import javax.swing.JLabel;
+
 public class Route {
 	
 	private int id;
@@ -67,7 +69,128 @@ public class Route {
 		return distance;
 	}
 	
+	public double getArea(){
+		double area = 0;
+		
+		
+		return area;
+	}
 	
+	public double getDuration(){
+		double duration = (getEndDate().getTime() - getStartDate().getTime())/(1000.0*3600.0);
+		return duration;
+	}
+	
+	public double getDrivingTime(){
+		double drivingTime = 0;
+		for (int i = 1; i < trackPoints.size(); i++) {
+			TrackPoint tp1 = trackPoints.get(i-1);
+			TrackPoint tp2 = trackPoints.get(i);
+			if(tp2.getSpeed() != 0){
+				drivingTime += (tp2.getDate().getTime() - tp1.getDate().getTime());
+			}
+		}		
+		
+		return drivingTime/(1000.0*3600.0);
+	}
+	
+	public double getStandStillTime(){
+		double standStillTime = 0;
+		for (int i = 1; i < trackPoints.size(); i++) {
+			TrackPoint tp1 = trackPoints.get(i-1);
+			TrackPoint tp2 = trackPoints.get(i);
+			if(tp2.getSpeed() == 0){
+				standStillTime += (tp2.getDate().getTime() - tp1.getDate().getTime());
+			}
+		}		
+		
+		return standStillTime/(1000.0*3600.0);
+	}
+	
+	public int getAverageSpeed(){
+		double averageSpeed = 0;
+		for (TrackPoint trackPoint : trackPoints) {
+			averageSpeed += trackPoint.getSpeed();
+		}
+		averageSpeed = averageSpeed / trackPoints.size();
+		
+		return (int)averageSpeed;
+	}
+	
+	public int getAverageDrivingSpeed(){
+		double averageDrivingSpeed = 0;
+		for (TrackPoint trackPoint : trackPoints) {
+			averageDrivingSpeed += trackPoint.getSpeed();
+		}
+		averageDrivingSpeed = averageDrivingSpeed / trackPoints.size();
+		
+		return (int)averageDrivingSpeed;
+	}
+	
+	public int getMinSpeed(){
+		double min = Double.MAX_VALUE;
+		for (TrackPoint trackPoint : trackPoints) {
+			if(trackPoint.getSpeed()<min){
+				min = trackPoint.getSpeed();
+			}
+		}
+		return (int)min;
+	}
+	
+	public int getMaxSpeed(){
+		double max = Integer.MIN_VALUE;
+		for (TrackPoint trackPoint : trackPoints) {
+			if(trackPoint.getSpeed()>max){
+				max = trackPoint.getSpeed();
+			}
+		}
+		return (int)max;
+	}
+	
+
+	public int getMinHeight(){
+		int min = Integer.MAX_VALUE;
+		for (TrackPoint trackPoint : trackPoints) {
+			if(trackPoint.getAltitude()<min){
+				min = trackPoint.getAltitude();
+			}
+		}
+		return min;
+	}
+	
+	public int getMaxHeight(){
+		int max = Integer.MIN_VALUE;
+		for (TrackPoint trackPoint : trackPoints) {
+			if(trackPoint.getAltitude()>max){
+				max = trackPoint.getAltitude();
+			}
+		}
+		return max;
+	}
+	
+	public int getElevationUpHill(){
+		int elevationUpHill = 0;
+		for (int i = 1; i < trackPoints.size(); i++) {
+			TrackPoint tp1 = trackPoints.get(i-1);
+			TrackPoint tp2 = trackPoints.get(i);
+			if(tp2.getAltitude()-tp1.getAltitude()>0){
+				elevationUpHill += tp2.getAltitude()-tp1.getAltitude();
+			}
+		}
+		return elevationUpHill;
+	}
+	
+	public int getElevationDownHill(){
+		int elevationDownHill = 0;
+		for (int i = 1; i < trackPoints.size(); i++) {
+			TrackPoint tp1 = trackPoints.get(i-1);
+			TrackPoint tp2 = trackPoints.get(i);
+			if(tp2.getAltitude()-tp1.getAltitude()<0){
+				elevationDownHill += tp1.getAltitude()-tp2.getAltitude();
+			}
+		}
+		return elevationDownHill;
+	}
 	
 	private void parse(){
 		try (	
@@ -92,7 +215,7 @@ public class Route {
 			double longitude = Double.parseDouble(line[1]);
 			SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 	        Date date = formatter.parse(line[2]);
-			TrackPoint tp = new TrackPoint(latitude, longitude, date);
+			TrackPoint tp = new TrackPoint(latitude, longitude, 0, date, 0); //TODO:
 			trackPoints.add(tp);
 		} catch (Exception e) {
 			e.printStackTrace();

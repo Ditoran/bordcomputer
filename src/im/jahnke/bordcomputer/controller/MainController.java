@@ -90,9 +90,8 @@ public class MainController implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getClickCount() >= 2 && e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("LogFilesTable")){
+		if(e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("LogFilesTable")){
 			JTable table = (JTable)e.getSource();
-			Logger.log("Row: " + table.rowAtPoint(e.getPoint()));
 			Route route = window.getLogFilesTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));
 			Logger.log("" + route.toString());
 			window.getMapPanel().fillMapPanel(route);
@@ -101,8 +100,10 @@ public class MainController implements MouseListener {
 			for (TrackPoint trackpoint : route.getTrackPoints()) {
 				window.getTrackPointTable().getModel().addData(trackpoint);
 			}
+			
+			window.getLogDetailsPanel().setData(route);
 		}
-		if(e.getClickCount() >= 2 && e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("TrackPointsTable")){
+		if(e.getSource() instanceof JTable && ((JTable)e.getSource()).getName().equals("TrackPointsTable")){
 			JTable table = (JTable)e.getSource();
 			Logger.log("Row: " + table.rowAtPoint(e.getPoint()));
 			TrackPoint trackPoint = window.getTrackPointTable().getModel().getAllData().get(table.rowAtPoint(e.getPoint()));

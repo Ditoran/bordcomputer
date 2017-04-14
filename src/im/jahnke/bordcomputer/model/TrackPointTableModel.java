@@ -13,7 +13,7 @@ public class TrackPointTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 7034884910615308010L;
 	
-	String[] columns = {"Zeit", "Latitude", "Longitude", "Altitude", "Teilstrecke", "Geschwindigkeit"};
+	String[] columns = {"Zeit", "Latitude", "Longitude", "Altitude", "Teilstrecke", "Geschwindigkeit", "Temperatur"};
 	ArrayList<TrackPoint> data = new ArrayList<>();
 	
 	public void addData(TrackPoint route){
@@ -60,7 +60,8 @@ public class TrackPointTableModel extends AbstractTableModel {
 		case 3:
 			return "";
 		case 4:
-			return rowIndex==0 ? 0 : TrackPoint.distanceBetweenTrackPoints(data.get(rowIndex-1), data.get(rowIndex));
+			return rowIndex==0 ? 0 : 
+				String.format("", TrackPoint.distanceBetweenTrackPoints(data.get(rowIndex-1), data.get(rowIndex)));
 		case 5:
 			return "";
 		default:
