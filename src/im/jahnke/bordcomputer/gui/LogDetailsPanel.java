@@ -52,11 +52,20 @@ public class LogDetailsPanel extends JPanel {
 	JLabel averageFuelLabel;
 	JLabel minFuelLabel;
 	JLabel maxFuelLabel;
-	JLabel volumeFuelLabel;
+	JLabel fuelVolumeLabel;
 	JLabel averageFuelValue;
 	JLabel minFuelValue;
 	JLabel maxFuelValue;
-	JLabel volumeFuelValue;
+	JLabel fuelVolumeValue;
+	
+	JLabel averageOuterTemperatureLabel;
+	JLabel minOuterTemperatureLabel;
+	JLabel maxOuterTemperatureLabel;
+	JLabel averageOuterTemperatureValue;
+	JLabel minOuterTemperatureValue;
+	JLabel maxOuterTemperatureValue;
+	
+	
 
 	public LogDetailsPanel() {
 		GridLayout layout = new GridLayout(2, 3);
@@ -163,11 +172,11 @@ public class LogDetailsPanel extends JPanel {
 		averageFuelLabel = createTextLabel(averageFuelLabel, "\u00D8 Verbrauch:");
 		minFuelLabel = createTextLabel(minFuelLabel, "Min. Verbrauch:");
 		maxFuelLabel = createTextLabel(maxFuelLabel, "Max. Verbrauch:");
-		volumeFuelLabel = createTextLabel(volumeFuelLabel, "Gesamtverbrauch:");
+		fuelVolumeLabel = createTextLabel(fuelVolumeLabel, "Gesamtverbrauch:");
 		averageFuelValue = createValueLabel(averageFuelValue);
 		minFuelValue = createValueLabel(minFuelValue);
 		maxFuelValue = createValueLabel(maxFuelValue);
-		volumeFuelValue = createValueLabel(volumeFuelValue);
+		fuelVolumeValue = createValueLabel(fuelVolumeValue);
 		
 		fuelPanel.add(averageFuelLabel);
 		fuelPanel.add(averageFuelValue);
@@ -175,8 +184,22 @@ public class LogDetailsPanel extends JPanel {
 		fuelPanel.add(minFuelValue);
 		fuelPanel.add(maxFuelLabel);
 		fuelPanel.add(maxFuelValue);
-		fuelPanel.add(volumeFuelLabel);
-		fuelPanel.add(volumeFuelValue);
+		fuelPanel.add(fuelVolumeLabel);
+		fuelPanel.add(fuelVolumeValue);
+		
+		averageOuterTemperatureLabel = createTextLabel(averageOuterTemperatureLabel, "\u00D8 Temperatur:");
+		minOuterTemperatureLabel = createTextLabel(minOuterTemperatureLabel, "Min. Temperatur:");
+		maxOuterTemperatureLabel = createTextLabel(maxOuterTemperatureLabel, "Max. Temperatur:");
+		averageOuterTemperatureValue = createValueLabel(averageOuterTemperatureValue);
+		minOuterTemperatureValue = createValueLabel(minOuterTemperatureValue);
+		maxOuterTemperatureValue = createValueLabel(maxOuterTemperatureValue);
+		
+		temperaturePanel.add(averageOuterTemperatureLabel);
+		temperaturePanel.add(averageOuterTemperatureValue);
+		temperaturePanel.add(minOuterTemperatureLabel);
+		temperaturePanel.add(minOuterTemperatureValue);
+		temperaturePanel.add(maxOuterTemperatureLabel);
+		temperaturePanel.add(maxOuterTemperatureValue);
 		
 	}
 	
@@ -196,7 +219,7 @@ public class LogDetailsPanel extends JPanel {
 	public void setData(Route route){
 		pointsValue.setText(Integer.toString(route.getTrackPoints().size()));
 		distanceValue.setText(String.format("%.2f km", route.getDistance()));
-		areaValue.setText(String.format("%.2f km²", route.getArea()));
+		areaValue.setText(String.format("%.2f km\u00b2", route.getArea()));
 		elapsedTimeValue.setText(String.format("%.2f h", route.getDuration()));
 		drivingTimeValue.setText(String.format("%.2f h", route.getDrivingTime()));
 		standStillValue.setText(String.format("%.2f h", route.getStandStillTime()));
@@ -208,5 +231,8 @@ public class LogDetailsPanel extends JPanel {
 		maxHeightValue.setText(String.format("%d m", route.getMaxHeight()));
 		elevationUpHillValue.setText(String.format("%d m", route.getElevationUpHill()));
 		elevationDownHillValue.setText(String.format("%d m", route.getElevationDownHill()));
+		averageOuterTemperatureValue.setText(String.format("%.01f°C", route.getAverageOuterTemperature()));
+		minOuterTemperatureValue.setText(String.format("%.01f\u00B0C", route.getMinOuterTemperature()));
+		maxOuterTemperatureValue.setText(String.format("%.01f\u00B0C", route.getMaxOuterTemperature()));
 	}
 }

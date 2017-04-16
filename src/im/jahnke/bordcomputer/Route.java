@@ -192,6 +192,34 @@ public class Route {
 		return elevationDownHill;
 	}
 	
+	public double getAverageFuel(){
+		return 0;
+	}
+	
+	public double getMinFuel(){
+		return 0;
+	}
+	
+	public double getMaxFuel(){
+		return 0;
+	}
+	
+	public double getFuelVolume(){
+		return 0;
+	}
+	
+	public double getAverageOuterTemperature(){
+		return 0;
+	}
+	
+	public double getMinOuterTemperature(){
+		return 0;
+	}
+	
+	public double getMaxOuterTemperature(){
+		return 0;
+	}
+	
 	private void parse(){
 		try (	
 			FileInputStream fis = new FileInputStream(file);

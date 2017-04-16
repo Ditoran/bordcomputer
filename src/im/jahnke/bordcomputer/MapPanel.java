@@ -1,6 +1,9 @@
 package im.jahnke.bordcomputer;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
@@ -13,11 +16,17 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -41,6 +50,8 @@ public class MapPanel {
 	
 	List<GeoPosition> track = new ArrayList<>();
 	JXMapViewer mapViewer;
+	
+	JSlider zoomSlider;
 	
 	public JXMapViewer initMapPanel() {
 		
@@ -68,6 +79,44 @@ public class MapPanel {
 		CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
 		mapViewer.setOverlayPainter(painter);
 		mapViewer.getViewportBounds();
+		
+		mapViewer.setLayout(new GridBagLayout());
+        
+        JPanel zoomPanel = new JPanel();
+        zoomPanel.setMaximumSize(new Dimension(30, 50));
+        zoomPanel.setLayout(new BorderLayout());
+        
+        JButton buttonMinus = new JButton("-");
+        buttonMinus.setMaximumSize(new Dimension(30, 20));
+        buttonMinus.addActionListener(al -> {
+        	mapViewer.setZoom(mapViewer.getZoom() + 1);
+        	updateZoomSlider();
+        });
+        zoomPanel.add(buttonMinus, BorderLayout.SOUTH);
+        
+        JButton buttonPlus = new JButton("+");
+        buttonPlus.setMaximumSize(new Dimension(30, 20));
+        buttonPlus.addActionListener(al -> {
+        	mapViewer.setZoom(mapViewer.getZoom() - 1);
+        	updateZoomSlider();
+        });
+        zoomPanel.add(buttonPlus, BorderLayout.NORTH);
+        
+        zoomSlider = new JSlider();
+        zoomSlider.setOrientation(JSlider.VERTICAL);
+        zoomSlider.setInverted(true);
+        zoomSlider.addChangeListener(cl -> {
+        	mapViewer.setZoom(zoomSlider.getValue());
+        });
+        updateZoomSlider();
+        zoomPanel.add(zoomSlider, BorderLayout.CENTER);
+        
+        GridBagConstraints c = new GridBagConstraints();
+		c.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+		c.fill = GridBagConstraints.SOUTHEAST;
+		c.weightx = 2.0;
+		c.weighty = 2.0;
+        mapViewer.add(zoomPanel, c);
 
 		addListeners();
 		
@@ -103,6 +152,7 @@ public class MapPanel {
 		CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
 		mapViewer.setOverlayPainter(painter);
 		mapViewer.getViewportBounds();
+		updateZoomSlider();
 	}
 	
 	private void addTrackPoint(double latitude, double longitude){
@@ -124,25 +174,27 @@ public class MapPanel {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_W:
 					mapViewer.setCenter(
-							new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() - 100));
+							new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() - 10));
 					break;
 				case KeyEvent.VK_A:
 					mapViewer.setCenter(
-							new Point.Double(mapViewer.getCenter().getX() - 100, mapViewer.getCenter().getY()));
+							new Point.Double(mapViewer.getCenter().getX() - 10, mapViewer.getCenter().getY()));
 					break;
 				case KeyEvent.VK_S:
 					mapViewer.setCenter(
-							new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() + 100));
+							new Point.Double(mapViewer.getCenter().getX(), mapViewer.getCenter().getY() + 10));
 					break;
 				case KeyEvent.VK_D:
 					mapViewer.setCenter(
-							new Point.Double(mapViewer.getCenter().getX() + 100, mapViewer.getCenter().getY()));
+							new Point.Double(mapViewer.getCenter().getX() + 10, mapViewer.getCenter().getY()));
 					break;
 				case KeyEvent.VK_PLUS:
 					mapViewer.setZoom(mapViewer.getZoom() - 1);
+					updateZoomSlider();
 					break;
 				case KeyEvent.VK_MINUS:
 					mapViewer.setZoom(mapViewer.getZoom() + 1);
+					updateZoomSlider();
 					break;
 				default:
 					break;
@@ -174,6 +226,7 @@ public class MapPanel {
 				double y = center.getY() + dy * (dzh - 1);
 
 				mapViewer.setCenter(new Point2D.Double(x, y));
+				updateZoomSlider();
 			}
 		});		
 		MouseAdapter ma = new MouseAdapter() {			
@@ -189,12 +242,17 @@ public class MapPanel {
 			public void mouseDragged(MouseEvent e) {
 				int diffX = Test.mousePosition.x - e.getPoint().x;
 				int diffY = Test.mousePosition.y - e.getPoint().y;
-				System.out.printf("x: %d, y: %d\n", diffX, diffY);
 				mapViewer.setCenter(new Point.Double(mapViewer.getCenter().getX()+diffX, mapViewer.getCenter().getY()+diffY));
 				Test.mousePosition = e.getPoint();
 			}
 		};
 		mapViewer.addMouseMotionListener(mma);
+	}
+	
+	private void updateZoomSlider(){
+		zoomSlider.setMinimum(mapViewer.getTileFactory().getInfo().getMinimumZoomLevel());
+		zoomSlider.setMaximum(mapViewer.getTileFactory().getInfo().getMaximumZoomLevel());
+		zoomSlider.setValue(mapViewer.getZoom());
 	}
 	
 }

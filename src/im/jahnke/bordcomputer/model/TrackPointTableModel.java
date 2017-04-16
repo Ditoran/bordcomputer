@@ -61,7 +61,7 @@ public class TrackPointTableModel extends AbstractTableModel {
 			return "";
 		case 4:
 			return rowIndex==0 ? 0 : 
-				String.format("", TrackPoint.distanceBetweenTrackPoints(data.get(rowIndex-1), data.get(rowIndex)));
+				String.format("%.03fkm", TrackPoint.distanceBetweenTrackPoints(data.get(rowIndex-1), data.get(rowIndex)));
 		case 5:
 			return "";
 		default:
