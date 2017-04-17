@@ -2,20 +2,17 @@ package im.jahnke.bordcomputer.gui;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 public class MenuBar extends JPanel{
 	
 	private static final long serialVersionUID = -4626919742336966027L;
 	
-	private JToolBar toolBar;
-	private JButton button;
+	//private JToolBar toolBar;
+	//private JButton button;
 	private JMenuBar menuBar;
 	private JMenu menuFile;
 	private JMenu menuConnect;
@@ -62,16 +59,15 @@ public class MenuBar extends JPanel{
         menuBar.add(Box.createHorizontalGlue());        
         
         this.add(menuBar);
-        toolBar = new JToolBar();
+        /*toolBar = new JToolBar();
         toolBar.setFloatable(false);
         
         button = new JButton();
         button.setIcon(new ImageIcon("icons/usb.png"));
 
         toolBar.add(button);
-        toolBar.add(Box.createHorizontalGlue());
+        toolBar.add(Box.createHorizontalGlue());*/
         this.add(Box.createHorizontalGlue());
-        this.add(toolBar);
         
         
 	}

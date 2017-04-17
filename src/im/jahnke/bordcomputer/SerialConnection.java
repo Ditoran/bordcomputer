@@ -12,7 +12,10 @@ import gnu.io.SerialPort;
 
 public class SerialConnection {
 	
-	void connect(String portName) throws Exception {
+	private InputStream in;
+	private OutputStream out;
+	
+	public void connect(String portName) throws Exception {
 		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 		if (portIdentifier.isCurrentlyOwned()) {
 			System.out.println("Error: Port is currently in use");
@@ -24,67 +27,49 @@ public class SerialConnection {
 				SerialPort serialPort = (SerialPort) commPort;
 				serialPort.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 						SerialPort.PARITY_NONE);
+				serialPort.setDTR(false);
 
-				InputStream in = serialPort.getInputStream();
-				OutputStream out = serialPort.getOutputStream();
-
-				(new Thread(new SerialReader(in))).start();
-				(new Thread(new SerialWriter(out))).start();
+				in = serialPort.getInputStream();
+				out = serialPort.getOutputStream();
 
 			} else {
 				System.out.println("Error: Only serial ports are handled by this example.");
 			}
 		}
 	}
-
-	public static class SerialReader implements Runnable {
-
-		InputStream in;
-
-		public SerialReader(InputStream in) {
-			this.in = in;
+	
+	public String writeCommand(String command) {
+		byte[] cmd = command.getBytes();
+		try {
+			for (byte b : cmd) {
+				this.out.write(b);
+			}
+		} catch (Exception e) {
+			
 		}
-
-		public void run() {
-			byte[] buffer = new byte[1024];
-			int len = -1;
-			try {
-				
-				while (true) {
-					String sb = new String();
-					while ((len = this.in.read(buffer)) > 0) {
-						String s = new String(buffer, 0, len);
-						sb += s;
-						System.out.print(s);
+		
+		byte[] buffer = new byte[1024];
+		int len = -1;
+		boolean running = true;
+		String sb = new String("");
+		try {
+			
+			while (running) {
+				while ((len = this.in.read(buffer)) > 0) {
+					String s = new String(buffer, 0, len);
+					sb += s;
+					if(sb.contains("===END===")){
+						running = false;
 					}
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	}
-
-	public static class SerialWriter implements Runnable {
-
-		OutputStream out;
-
-		public SerialWriter(OutputStream out) {
-			this.out = out;
-		}
-
-		public void run() {
-			try {
-				int c = 0;
-				while ((c = System.in.read()) > -1) {
-					this.out.write(c);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		return sb;
 	}
 	
-	public static String[] listSerialPorts() {
+	public String[] listSerialPorts() {
 		 
 	    Enumeration<?> ports = CommPortIdentifier.getPortIdentifiers();
 	    ArrayList<String> portList = new ArrayList<String>();
@@ -98,7 +83,5 @@ public class SerialConnection {
 	    portArray = (String[]) portList.toArray(new String[0]);
 	    return portArray;
 	}
-	
-	
 
 }

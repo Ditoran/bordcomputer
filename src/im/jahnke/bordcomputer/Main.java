@@ -21,9 +21,8 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
-				Model model = new Model();
 				MainWindow window = new MainWindow();
-				new MainController(model, window);
+				new MainController(window);
 			}
 		});		
 

@@ -12,14 +12,14 @@ import javax.swing.JLabel;
 public class Route {
 	
 	private int id;
-	private File file;
+	private String rawData;
 	
 	private ArrayList<TrackPoint> trackPoints = new ArrayList<>();
 	
 	
-	public Route(File file) {
-		this.file = file;
-		this.id = Integer.parseInt(file.getName().split("\\.")[0]);
+	public Route(int id, String rawData) {
+		this.rawData = rawData;
+		this.id = id;
 		parse();
 	}
 	
@@ -221,19 +221,10 @@ public class Route {
 	}
 	
 	private void parse(){
-		try (	
-			FileInputStream fis = new FileInputStream(file);
-			Scanner sc = new Scanner(fis);
-		){
-			String line;
-			String[] splittedLine;
-			while(sc.hasNextLine()){
-				line = sc.nextLine();
-				splittedLine = line.split(";");
-				parseLine(splittedLine);
-			}
-		} catch (Exception e) {
-			
+		String[] splittedLine;
+		for(String line : rawData.split(System.lineSeparator())){
+			splittedLine = line.split(";");
+			parseLine(splittedLine);
 		}
 	}
 	

@@ -18,10 +18,10 @@ public class LogFileTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		File f1 = new File("tst\\res\\LogExample.txt");
-		file1 = new Route(f1);
+		//file1 = new Route(f1);
 		
 		File f2 = new File("tst\\res\\3.txt");
-		file2 = new Route(f2);
+		//file2 = new Route(f2);
 	}
 
 	@Before

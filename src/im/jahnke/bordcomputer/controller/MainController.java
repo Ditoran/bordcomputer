@@ -3,7 +3,6 @@ package im.jahnke.bordcomputer.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -11,40 +10,34 @@ import javax.swing.JTable;
 import im.jahnke.bordcomputer.Logger;
 import im.jahnke.bordcomputer.Route;
 import im.jahnke.bordcomputer.TrackPoint;
-import im.jahnke.bordcomputer.gui.DeviceDialog;
 import im.jahnke.bordcomputer.gui.MainWindow;
-import im.jahnke.bordcomputer.model.Model;
-import im.jahnke.bordcomputer.util.DeviceManager;
+import im.jahnke.bordcomputer.util.DeviceManagerFactory;
 
 public class MainController implements MouseListener {
 	
-	private Model model;
 	private MainWindow window;
 		
-	public MainController(Model model, MainWindow window) {
-		this.model = model;
+	public MainController(MainWindow window) {
 		this.window = window;
 		initActionListeners();
 		deviceDetection();
 	}
 
 	public void connectButtonActionPerformed(ActionEvent e) {
-			DeviceDialog.showDialog(this);			
 	}
 	
 	public void loadFilesFromDevice(){
-		for (File file : DeviceManager.listLogs()) {
-			Route route = new Route(file);
-			Logger.log("Reading file " + file.getName());
+		String[] logFiles = DeviceManagerFactory.getInstance().listLogs();
+		for (String file : logFiles) {
+			int id = Integer.parseInt(file.split("\\.")[0]);
+			Route route = new Route(id, DeviceManagerFactory.getInstance().getLog(file));
 			window.getLogFilesTable().addRoute(route);
 		}
 	}
 	
 	public void initActionListeners(){
 		
-		window.getMenuPanel().getMenuItemConnectSD().addActionListener(ae ->{
-			DeviceDialog.showDialog(this);
-		});
+		window.getMenuPanel().getMenuItemConnectSD().addActionListener(ae -> {});
 		window.getMenuPanel().getMenuItemAbout().addActionListener(ae -> {
 			JOptionPane.showMessageDialog(null, "BordComputer Version 0.1.1", "Über...", JOptionPane.INFORMATION_MESSAGE);
 		});
@@ -71,12 +64,12 @@ public class MainController implements MouseListener {
 			@Override
 			public void run() {
 				while(true){
-					String device;
-					if((device = DeviceManager.findDevice())!=null){
-						DeviceManager.setDefaultDevice(device);
+					//search for SD card
+					if(DeviceManagerFactory.connect()){
 						loadFilesFromDevice();
 						break;
 					}
+					
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
